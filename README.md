@@ -77,10 +77,3 @@ Reagan Abrahams
 Cape Town, South Africa
 0764618185
 www.linkedin.com/in/reagan-abrahams
-
-
-#open source software used in this project :
-
-ALERTS: https://github.com/MarcosSan4/realtime-twilio-outbound.git
-DETECTION AND RECOGNITION: https://github.com/timesler/facenet-pytorch.git
-RECORDING VIDEO: https://github.com/masloff-open-projects/OpenCV-Webcam-Recorder-and-Streamer.git
