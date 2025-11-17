@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Consent Form - AI Intrusion Detection</title>
+    <link rel="stylesheet" href="static/consent_form.css">
+</head>
+<body>
+    {% if error %}
+        <div id="error-banner">
+            {{ error }}
+        </div>
+        <script>
+            setTimeout(() => {
+                const banner = document.getElementById("error-banner");
+                if (banner) {
+                    banner.style.opacity = "0";
+                    banner.style.transition = "opacity 0.5s ease";
+                    setTimeout(() => banner.remove(), 500);
+                }
+            }, 3000);
+        </script>
+    {% endif %}
+
+    <div class="container">
+        <a href="/" class="close-btn" title="Close">&times;</a>
+
+        <div class="main-title">
+            <span>AI Intrusion Detection</span>
+        </div>
+        <div class="subtitle">Consent Form</div>
+        
+        <div class="card">
+            <div class="card-header">
+                Participant Information & Consent
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" name="first_name" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" name="last_name" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>ID Number</label>
+                        <input type="text" name="id_number" class="form-control" required>
+                    </div>
+
+                    <div class="form-group consent-group">
+                        <label class="consent-label">
+                            <input type="checkbox" name="consent" value="Yes" required>
+                            <span class="checkmark"></span>
+                            I give my consent to participate in the AI intrusion detection
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Digital Signature</label>
+                        <div class="signature-container">
+                            <canvas id="signature-pad" width="400" height="150"></canvas>
+                            <div class="signature-controls">
+                                <button type="button" class="btn-secondary" onclick="clearCanvas()">Clear Signature</button>
+                            </div>
+                        </div>
+                        <input type="hidden" name="signature" id="signature">
+                    </div>
+
+                    <button type="submit" class="btn-primary submit-btn" onclick="saveSignature()">
+                        Submit Consent Form
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('signature-pad');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+        // Set canvas properties
+        ctx.strokeStyle = '#232526';
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+
+        function getPos(event) {
+            const rect = canvas.getBoundingClientRect();
+            let x, y;
+            if (event.touches) {
+                x = (event.touches[0].clientX - rect.left) * (canvas.width / rect.width);
+                y = (event.touches[0].clientY - rect.top) * (canvas.height / rect.height);
+            } else {
+                x = (event.clientX - rect.left) * (canvas.width / rect.width);
+                y = (event.clientY - rect.top) * (canvas.height / rect.height);
+            }
+            return {x, y};
+        }
+
+        canvas.addEventListener('mousedown', e => {
+            drawing = true;
+            const pos = getPos(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        });
+
+        canvas.addEventListener('mousemove', e => {
+            if (!drawing) return;
+            const pos = getPos(e);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+        });
+
+        canvas.addEventListener('mouseup', e => drawing = false);
+        canvas.addEventListener('mouseleave', e => drawing = false);
+
+        canvas.addEventListener('touchstart', e => {
+            e.preventDefault();
+            drawing = true;
+            const pos = getPos(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        });
+
+        canvas.addEventListener('touchmove', e => {
+            e.preventDefault();
+            if (!drawing) return;
+            const pos = getPos(e);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+        });
+
+        canvas.addEventListener('touchend', e => drawing = false);
+        canvas.addEventListener('touchcancel', e => drawing = false);
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function saveSignature() {
+            const dataURL = canvas.toDataURL();
+            document.getElementById('signature').value = dataURL;
+        }
+    </script>
+</body>
+</html>
