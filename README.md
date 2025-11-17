@@ -1,4 +1,4 @@
-#PROJECT TITLE: Intelligent Intruder Detection & Face Recognition System
+#PROJECT TITLE: Intrusion Detection in HD Video Feeds Using AI Driven Software for Ground Station Surveillance
 
 #Description
 
